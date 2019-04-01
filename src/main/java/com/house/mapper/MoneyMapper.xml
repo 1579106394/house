@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.house.mapper.MoneyMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="Money" type="com.house.pojo.Money">
+        <id column="money_id" property="moneyId" />
+        <result column="money_user" property="moneyUser" />
+        <result column="money_month" property="moneyMonth" />
+        <result column="money_money" property="moneyMoney" />
+        <association property="user" javaType="User">
+            <id column="id" property="id" />
+            <result column="username" property="username" />
+            <result column="password" property="password" />
+            <result column="mobile" property="mobile" />
+            <result column="card" property="card" />
+            <result column="age" property="age" />
+            <result column="sex" property="sex" />
+            <result column="money" property="money" />
+            <result column="role" property="role" />
+        </association>
+    </resultMap>
+
+</mapper>
