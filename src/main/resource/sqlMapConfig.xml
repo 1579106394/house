@@ -6,7 +6,7 @@
 
     <!--设置别名-->
     <typeAliases>
-        <package name="com.market.pojo"/>
+        <package name="com.house.pojo"/>
     </typeAliases>
 
 </configuration>

@@ -14,17 +14,32 @@
         <property name="password" value="${jdbc.password}"/>
     </bean>
 
-    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+    <bean id="sqlSessionFactory" class="com.baomidou.mybatisplus.spring.MybatisSqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource"/>
-        <property name="configLocation" value="classpath:sqlMapConfig.xml"/>
+        <!-- 配置实体扫描路径，多个package可以用分号; 逗号, 分隔， 支持通配符*-->
+        <!-- com.a.b.entity;com.a.c.entity;com.d.*.entity-->
+        <property name="typeAliasesPackage" value="com.house.pojo"/>
+        <property name="configuration" ref="mybatisConfig"/>
+    </bean>
+
+    <bean id="mybatisConfig" class="com.baomidou.mybatisplus.MybatisConfiguration">
+        <property name="mapUnderscoreToCamelCase" value="true"/>
+    </bean>
+
+    <!-- 定义 MP 全局策略 -->
+    <bean id="globalConfig" class="com.baomidou.mybatisplus.entity.GlobalConfiguration">
+        <!-- 全局ID类型： 0, "数据库ID自增"， 1, "用户输入ID", 2, "全局唯一ID", 3, "全局唯一ID"-->
+        <property name="idType" value="1"/>
+        <property name="tablePrefix" value="h_" />
+    </bean>
+
+    <!-- 配置mybatis 扫描mapper接口的路径, 相当于注解@MapperScan，@MapperScan("com.baomidou.mybatisplus.test.h2.entity.mapper")-->
+    <bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.house.mapper"/>
     </bean>
 
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="dataSource"/>
-    </bean>
-
-    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="com.market.mapper"/>
     </bean>
 
 </beans>
