@@ -5,35 +5,11 @@
     <div class="layui-side-scroll">
         <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
         <ul class="layui-nav layui-nav-tree" lay-filter="test">
-            <c:if test="${sessionScope.user.userRole==2}">
-                <li class="layui-nav-item"><a href="${pageContext.request.contextPath}/api/car/carList.html">车辆管理</a>
-                </li>
-            </c:if>
-            <li class="layui-nav-item">
-                <a href="${pageContext.request.contextPath}/api/teacher/teacherList.html">
-                    <c:if test="${sessionScope.user.userRole==2}">教练管理</c:if>
-                    <c:if test="${sessionScope.user.userRole!=2}">预约教练</c:if>
-                </a>
+            <li class="layui-nav-item"><a href="${pageContext.request.contextPath}/house/houseList.html">房屋管理</a>
             </li>
-            <li class="layui-nav-item">
-                <a href="${pageContext.request.contextPath}/api/appoint/appointList.html">
-                    <c:if test="${sessionScope.user.userRole==2}">预约管理</c:if>
-                    <c:if test="${sessionScope.user.userRole!=2}">我的预约</c:if>
-                </a>
+            <li class="layui-nav-item"><a href="${pageContext.request.contextPath}/user/userList.html">用户管理</a>
             </li>
-            <li class="layui-nav-item">
-                <a href="${pageContext.request.contextPath}/api/comment/commentList.html">
-                    评论管理
-                </a>
-            </li>
-            <c:if test="${sessionScope.user.userRole==2}">
-                <li class="layui-nav-item"><a href="${pageContext.request.contextPath}/api/user/userList.html">学员管理</a>
-                </li>
-            </c:if>
-            <c:if test="${sessionScope.user.userRole==1}">
-                <li class="layui-nav-item"><a href="${pageContext.request.contextPath}/api/user/myInfo.html">个人信息</a>
-                </li>
-            </c:if>
+
         </ul>
     </div>
 </div>

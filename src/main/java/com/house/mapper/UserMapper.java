@@ -1,7 +1,10 @@
 package com.house.mapper;
 
+import com.house.pojo.Page;
 import com.house.pojo.User;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +16,17 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  */
 public interface UserMapper extends BaseMapper<User> {
 
+    /**
+     * 分页查询
+     * @param page
+     * @return
+     */
+    List<User> getList(Page<User> page);
+
+    /**
+     * 查询总数
+     * @param page
+     * @return
+     */
+    Integer getCount(Page<User> page);
 }

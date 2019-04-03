@@ -20,7 +20,7 @@
         <h1>驾校预约系统 - 注册</h1>
     </header>
     <div class="beg-login-main">
-        <form action="${pageContext.request.contextPath}/api/user/register.html" class="layui-form" method="post">
+        <form action="${pageContext.request.contextPath}/user/register.html" class="layui-form" method="post">
             <div class="layui-form-item">
                 <label class="beg-login-icon">
                     <i class="layui-icon">&#xe612;</i>
@@ -39,28 +39,35 @@
                 <label class="beg-login-icon">
                     <i class="layui-icon">&#xe642;</i>
                 </label>
-                <input type="text" lay-verify="required" name="userName" autocomplete="off" placeholder="这里输入姓名"
+                <input type="text" lay-verify="required" name="name" autocomplete="off" placeholder="这里输入姓名"
                        class="layui-input" lay-verType="required">
             </div>
             <div class="layui-form-item">
                 <label class="beg-login-icon">
                     <i class="layui-icon">&#xe642;</i>
                 </label>
-                <input type="text" lay-verify="required" name="userAge" autocomplete="off" placeholder="这里输入年龄"
+                <input type="text" lay-verify="required" name="age" autocomplete="off" placeholder="这里输入年龄"
                        class="layui-input" lay-verType="required">
             </div>
             <div class="layui-form-item">
                 <label class="beg-login-icon">
                     <i class="layui-icon">&#xe642;</i>
                 </label>
-                <input type="text" lay-verify="required" name="userTelephone" autocomplete="off" placeholder="这里输入手机号"
+                <input type="text" lay-verify="required" name="mobile" autocomplete="off" placeholder="这里输入手机号"
                        class="layui-input" lay-verType="required">
             </div>
             <div class="layui-form-item">
                     <label class="layui-form-label" style="text-align: left;">性别</label>
                 <div class="layui-input-block">
-                <input type="radio" name="userGender" value="1" title="男" checked>
-                <input type="radio" name="userGender" value="2" title="女">
+                <input type="radio" name="sex" value="1" title="男" checked>
+                <input type="radio" name="sex" value="2" title="女">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                    <label class="layui-form-label" style="text-align: left;">身份</label>
+                <div class="layui-input-block">
+                    <input type="radio" name="role" value="1" title="我是租户" checked>
+                    <input type="radio" name="role" value="2" title="我是租赁公司">
                 </div>
             </div>
 

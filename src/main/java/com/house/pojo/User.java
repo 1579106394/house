@@ -32,6 +32,10 @@ public class User implements Serializable {
      */
     private String password;
     /**
+     * 姓名
+     */
+    private String name;
+    /**
      * 手机号
      */
     private String mobile;
@@ -56,6 +60,13 @@ public class User implements Serializable {
      */
     private Integer role;
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public String getId() {
         return id;

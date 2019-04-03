@@ -51,6 +51,16 @@ public class House implements Serializable {
     @TableField("house_content")
     private String houseContent;
     /**
+     * 照片
+     */
+    @TableField("house_img")
+    private String houseImg;
+    /**
+     * 用户id
+     */
+    @TableField("house_user")
+    private String houseUser;
+    /**
      * 1未租出2已租出
      */
     @TableField("house_state")
@@ -61,6 +71,36 @@ public class House implements Serializable {
     @TableField("house_comment")
     private String houseComment;
 
+    /**
+     * 用户
+     * @return
+     */
+    @TableField(exist = false)
+    private User user;
+
+    public String getHouseUser() {
+        return houseUser;
+    }
+
+    public void setHouseUser(String houseUser) {
+        this.houseUser = houseUser;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public String getHouseImg() {
+        return houseImg;
+    }
+
+    public void setHouseImg(String houseImg) {
+        this.houseImg = houseImg;
+    }
 
     public String getHouseId() {
         return houseId;

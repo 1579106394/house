@@ -6,12 +6,40 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>修改学员</title>
+    <title>编辑房屋</title>
     <script type="text/javascript" src="${pageContext.request.contextPath}/layui/lay/modules/jquery.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/layui/layui.js"></script>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/layui/css/layui.css">
     <script type="text/javascript" src="${pageContext.request.contextPath}/javascript/sys_config.js"></script>
+    <script type="text/javascript">
+        // 上传文件
+        layui.use(['form', 'layer', 'table', 'upload'], function () {
+            var $ = layui.jquery
+                , upload = layui.upload;
+            layui.use('upload', function () {
+                var upload = layui.upload;
+                //执行实例
+                var uploadInst = upload.render({
+                    elem: '#file' //绑定元素
+                    , accept: 'images'
+                    , acceptMime: 'image/*'
+                    , url: '${pageContext.request.contextPath}/file/upload.action'
+                    , size: 1000
+                    , size: '204800' //kb
+                    , done: function (res) {
+                        layer.msg('上传成功');
+                        console.log(res)
+                        $("#photo").val(res.url)
 
+                    }
+                    , error: function () {
+                        //请求异常回调
+                        layer.msg('上传失败');
+                    }
+                });
+            });
+        })
+    </script>
 </head>
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
@@ -22,69 +50,65 @@
     <div class="layui-body">
         <div style="padding: 15px;">
             <fieldset class="layui-elem-field">
-                <legend>学员管理 - 修改学员</legend>
+                <legend>房屋管理 - 编辑房屋</legend>
                 <div class="layui-field-box">
 
-                    <form class="layui-form" action="${pageContext.request.contextPath}/api/user/updateUser.html"
-                          method="post">
-                        <input type="hidden" name="userId" value="${user.userId}">
+                    <form id="addHouseForm" class="layui-form"
+                          action="${pageContext.request.contextPath}/house/updateHouse.html" method="post">
+                        <%--隐藏域，存储照片信息--%>
+                        <input type="hidden" name="houseId" value="${house.houseId}"/>
+                        <%--隐藏域，存储照片信息--%>
+                        <input type="hidden" name="houseImg" id="photo" value="${house.houseImg}">
                         <div class="layui-form-item">
-                            <label class="layui-form-label">账号</label>
+                            <label class="layui-form-label">房屋名</label>
                             <div class="layui-input-block">
-                                <input type="text" name="username" required lay-verify="required" placeholder="账号"
-                                       autocomplete="off" class="layui-input" value="${user.username}" readonly="readonly">
+                                <input type="text" name="houseName" required lay-verify="required" placeholder="房屋名"
+                                       autocomplete="off" class="layui-input" value="${house.houseName}">
                             </div>
                         </div>
                         <div class="layui-form-item">
-                            <label class="layui-form-label">密码</label>
-                            <div class="layui-input-inline">
-                                <input type="password" name="password" required lay-verify="required" placeholder="密码"
-                                       autocomplete="off" class="layui-input" value="${user.password}">
+                            <label class="layui-form-label">建筑面积</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="houseArea" required lay-verify="required" placeholder="建筑面积"
+                                       autocomplete="off" class="layui-input" value="${house.houseArea}">
                             </div>
                         </div>
                         <div class="layui-form-item">
-                            <label class="layui-form-label">姓名</label>
+                            <label class="layui-form-label">地址</label>
                             <div class="layui-input-block">
-                                <input type="text" name="userName" required lay-verify="required" placeholder="姓名"
-                                       autocomplete="off" class="layui-input" value="${user.userName}">
+                                <input type="text" name="houseAddress" required lay-verify="required" placeholder="地址"
+                                       autocomplete="off" class="layui-input" value="${house.houseAddress}">
                             </div>
                         </div>
                         <div class="layui-form-item">
-                            <label class="layui-form-label">性别</label>
+                            <label class="layui-form-label">图片</label>
+                            <button type="button" class="layui-btn" id="file" style="margin-bottom: 10px;">
+                                <i class="layui-icon">&#xe67c;</i>选择图片
+                            </button>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">月房租</label>
                             <div class="layui-input-block">
-                                <c:if test="${user.userGender==1}">
-                                    <input type="radio" name="userGender" value="1" title="男" checked>
-                                    <input type="radio" name="userGender" value="2" title="女">
-                                </c:if>
-                                <c:if test="${user.userGender!=1}">
-                                    <input type="radio" name="userGender" value="1" title="男">
-                                    <input type="radio" name="userGender" value="2" title="女" checked>
-                                </c:if>
+                                <input type="text" name="housePrice" required lay-verify="required" placeholder="月房租"
+                                       autocomplete="off" class="layui-input" value="${house.housePrice}">
                             </div>
                         </div>
                         <div class="layui-form-item">
-                            <label class="layui-form-label">年龄</label>
+                            <label class="layui-form-label">房屋描述</label>
                             <div class="layui-input-block">
-                                <input type="text" name="userAge" required lay-verify="required" placeholder="年龄"
-                                       autocomplete="off" class="layui-input" value="${user.userAge}">
+                                <textarea name="houseContent" placeholder="请输入内容" class="layui-textarea">${house.houseContent}</textarea>
                             </div>
                         </div>
                         <div class="layui-form-item">
-                            <label class="layui-form-label">手机号</label>
+                            <label class="layui-form-label">备注</label>
                             <div class="layui-input-block">
-                                <input type="text" name="userTelephone" required lay-verify="required" placeholder="手机号"
-                                       autocomplete="off" class="layui-input" value="${user.userTelephone}">
+                                <textarea name="houseComment" placeholder="请输入内容" class="layui-textarea">${house.houseComment}</textarea>
                             </div>
                         </div>
-                        <div class="layui-form-item">
-                            <label class="layui-form-label"></label>
-                            <div class="layui-input-block">
-                                <span style="color: red;">${error}</span>
-                            </div>
-                        </div>
+
                         <div class="layui-form-item">
                             <div class="layui-input-block">
-                                <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+                                <button class="layui-btn" type="submit" id="submitButton">立即提交</button>
                                 <button type="reset" class="layui-btn layui-btn-primary">重置</button>
                             </div>
                         </div>

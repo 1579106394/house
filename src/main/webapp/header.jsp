@@ -8,10 +8,10 @@
             <a>
                 欢迎&nbsp;:
                 <span style="color: deepskyblue">
-                    ${sessionScope.user.userName}
+                    ${sessionScope.user.name}
                 </span>
             </a>
         </li>
-        <li class="layui-nav-item"><a href="${pageContext.request.contextPath}/api/user/logout.html">注销登录</a></li>
+        <li class="layui-nav-item"><a href="${pageContext.request.contextPath}/user/logout.html">注销登录</a></li>
     </ul>
 </div>

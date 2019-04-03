@@ -6,18 +6,19 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>预约列表</title>
+    <title>房屋列表</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/layui/css/layui.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/global.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/icheck/minimal/red.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/global.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/tp5page.css">
     <script type="text/javascript" src="${pageContext.request.contextPath}/layui/lay/modules/jquery.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/javascript/jquery.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/layui/layui.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/icheck/icheck.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/javascript/dw.js"></script>
     <script type="text/javascript">
+
+        layui.use('form', function () {  //如果只加载一个模块，可以不填数组。如：layui.use('form')
+            var form = layui.form //获取form模块
+        });
+
         /**
          * 分页函数
          * @param currentPage
@@ -31,33 +32,27 @@
          * 删除提示函数
          * @param id
          */
-        function deleteAppoint(id) {
+        function deleteHouse(id) {
             layer.confirm('确定删除吗?', {icon: 2, title: '提示'}, function (index) {
-                window.location.href = "${pageContext.request.contextPath}/api/appoint/deleteAppoint" + id + ".html"
+                window.location.href = "${pageContext.request.contextPath}/house/deleteHouse" + id + ".html"
                 layer.close(index);
             });
         }
 
-        function deleteMany() {
-            layer.confirm('确定删除这些吗?', {icon: 2, title: '提示'}, function (index) {
-                $("#deleteForm").submit()
-                layer.close(index);
-            });
+        /**
+         * 查看图片
+         */
+        function lookImg(imgUrl) {
+            layer.alert('<img src="' + imgUrl + '"/>')
         }
 
-        // 跳转到评论
-        function toComment(id, teacherId) {
-            // 根据id使用ajax查询这条记录，如果没有到结束时间，就提示本次练车还没结束，如果到了，就跳转到写评论的界面
-            $.post("${pageContext.request.contextPath}/api/appoint/checkTime.action", {"appointId": id}, function (data) {
-                if(data.status==400) {
-                    layer.alert(data.msg)
-                }
-                if(data.status==200) {
-                    // 已经结束，跳转到去评论的页面
-                    window.location.href="${pageContext.request.contextPath}/api/comment/toAddComment/"+teacherId+".html"
-                }
-            })
+        /**
+         * 查看备注
+         */
+        function lookContent(content) {
+            layer.alert(content)
         }
+
     </script>
     <style type="text/css">
         .layui-table img {
@@ -75,24 +70,32 @@
         <!-- 内容主体区域 -->
         <div style="padding: 15px;">
             <fieldset class="layui-elem-field">
-                <legend>预约管理 - 预约列表</legend>
+                <legend>房屋管理 - 房屋列表</legend>
                 <div class="layui-field-box">
                     <form id="listForm" class="layui-form"
-                          action="${pageContext.request.contextPath}/api/appoint/appointList.html">
+                          action="${pageContext.request.contextPath}/house/houseList.html">
                         <input type="hidden" id="currentPage" name="currentPage" value="${page.currentPage}">
                         <div class="layui-form-item" style="text-align:center;">
-                            <div class="layui-inline">
-                                <div class="layui-input-inline">
-                                    <input autocomplete="off" class="layui-input" placeholder="教练姓名" type="text"
-                                           name="params[teacherName]" value="${page.params.teacherName}">
-                                </div>
+                            <div class="layui-input-inline">
+                                <input autocomplete="off" class="layui-input" placeholder="请输入房屋名" type="text"
+                                       name="params[houseName]" value="${page.params.houseName}">
                             </div>
-                            <div class="layui-inline">
-                                <div class="layui-input-inline">
-                                    <input autocomplete="off" class="layui-input" placeholder="学员姓名" type="text"
-                                           name="params[userName]" value="${page.params.userName}">
-                                </div>
+                            <div class="layui-input-inline">
+                                <input autocomplete="off" class="layui-input" placeholder="请输入地址" type="text"
+                                       name="params[houseAddress]" value="${page.params.houseAddress}">
                             </div>
+                            <div class="layui-input-inline">
+                                <input autocomplete="off" class="layui-input" placeholder="请输入发布人" type="text"
+                                       name="params[name]" value="${page.params.name}">
+                            </div>
+                            <div class="layui-input-inline">
+                                <select name="params[houseState]">
+                                    <option>请选择出租状态</option>
+                                    <option value="1">未租出</option>
+                                    <option value="2">已租出</option>
+                                </select>
+                            </div>
+
                             <div class="layui-inline" style="text-align:left;">
                                 <div class="layui-input-inline">
                                     <button class="layui-btn"><i class="layui-icon">&#xe615;</i>查询</button>
@@ -103,13 +106,13 @@
                     <hr>
 
                     <div class="layui-btn-group">
-                        <button class="layui-btn layui-btn-xs layui-btn-danger" onclick="deleteMany()">
-                            <i class="layui-icon">&#xe640;</i>删除
-                        </button>
+                        <a class="layui-btn layui-btn-xs layui-btn-normal"
+                           href="${pageContext.request.contextPath}/house/addHouse.jsp">
+                            <i class="layui-icon">&#xe654;</i>新增
+                        </a>
                     </div>
                     <hr>
-                    <form id="deleteForm" action="${pageContext.request.contextPath}/api/appoint/deleteAppoint.html"
-                          method="post">
+                    <form id="deleteForm" method="post">
                         <table class="layui-table">
                             <colgroup>
                                 <col width="150">
@@ -119,37 +122,51 @@
                             </colgroup>
                             <thead>
                             <tr>
-                                <th class="selectAll"><input type="checkbox"></th>
-                                <th>学员姓名</th>
-                                <th>教练姓名</th>
-                                <th>开始时间</th>
-                                <th>结束时间</th>
+                                <th>房屋名</th>
+                                <th>发布人</th>
+                                <th>建筑面积</th>
+                                <th>地址</th>
+                                <th>房租</th>
+                                <th>状态</th>
+                                <th>备注</th>
                                 <th style="text-align:center;">操作</th>
                             </tr>
                             </thead>
                             <tbody>
 
-                            <c:forEach items="${page.list}" var="appoint" varStatus="i">
+                            <c:forEach items="${page.list}" var="house" varStatus="i">
                                 <tr>
-                                    <td><input type="checkbox" name="appointIds" value="${appoint.appointId}"></td>
-                                    <td>${appoint.user.userName}</td>
-                                    <td>${appoint.teacher.teacherName}</td>
-                                    <td>${appoint.appointStartDate}</td>
-                                    <td>${appoint.appointEndDate}</td>
+                                    <td>${house.houseName}</td>
+                                    <td>${house.user.name}</td>
+                                    <td>${house.houseArea}</td>
+                                    <td>${house.houseAddress}</td>
+                                    <td>${house.housePrice}</td>
+                                    <td>${house.houseState==1?"未租出":"已租出"}</td>
+                                    <td>${house.houseComment}</td>
                                     <td class="text-center">
                                         <div class="layui-btn-group">
+                                            <a class="layui-btn layui-btn-xs layui-btn-normal"
+                                               href="${pageContext.request.contextPath}/house/getHouse/${house.houseId}.html">
+                                                <i class="layui-icon">&#xe642;</i>编辑
+                                            </a>
                                             <a class="layui-btn layui-btn-xs layui-btn-danger"
                                                href="javascript:void(0)"
-                                               onclick="deleteAppoint('${appoint.appointId}')">
+                                               onclick="deleteHouse('${house.houseId}')">
                                                 <i class="layui-icon">&#xe640;</i>删除
                                             </a>
-                                            <c:if test="${sessionScope.user.userRole==1}">
-                                                <a class="layui-btn layui-btn-xs"
-                                                   href="javascript:void(0)" onclick="toComment('${appoint.appointId}','${appoint.teacher.teacherId}')">
-                                                    <i class="layui-icon">&#xe63a;</i>评价
-                                                </a>
-                                            </c:if>
-
+                                            <a class="layui-btn layui-btn-xs"
+                                               href="${pageContext.request.contextPath}/appoint/toAppoint.html?houseId=${house.houseId}">
+                                                <i class="layui-icon">&#xe667;</i>租房
+                                            </a>
+                                            <a class="layui-btn layui-btn-xs"
+                                               href="javascript:void(0);" onclick="lookImg('${house.houseImg}')">
+                                                <i class="layui-icon">&#xe63a;</i>图片
+                                            </a>
+                                            <a class="layui-btn layui-btn-xs"
+                                               href="javascript:void(0);"
+                                               onclick="lookContent('${house.houseContent}')">
+                                                <i class="layui-icon">&#xe63a;</i>描述
+                                            </a>
                                         </div>
                                     </td>
                                 </tr>

@@ -4,14 +4,71 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.house.pojo.House">
-        <id column="house_id" property="houseId" />
-        <result column="house_name" property="houseName" />
-        <result column="house_area" property="houseArea" />
-        <result column="house_address" property="houseAddress" />
-        <result column="house_price" property="housePrice" />
-        <result column="house_content" property="houseContent" />
-        <result column="house_state" property="houseState" />
-        <result column="house_comment" property="houseComment" />
+        <id column="house_id" property="houseId"/>
+        <result column="house_name" property="houseName"/>
+        <result column="house_area" property="houseArea"/>
+        <result column="house_address" property="houseAddress"/>
+        <result column="house_price" property="housePrice"/>
+        <result column="house_price" property="houseUser"/>
+        <result column="house_content" property="houseContent"/>
+        <result column="house_state" property="houseState"/>
+        <result column="house_comment" property="houseComment"/>
+        <result column="house_img" property="houseImg"/>
+        <association property="user" javaType="com.house.pojo.User">
+            <id column="id" property="id"/>
+            <result column="username" property="username"/>
+            <result column="password" property="password"/>
+            <result column="mobile" property="mobile"/>
+            <result column="name" property="name"/>
+            <result column="card" property="card"/>
+            <result column="age" property="age"/>
+            <result column="sex" property="sex"/>
+            <result column="money" property="money"/>
+            <result column="role" property="role"/>
+        </association>
     </resultMap>
+    <select id="getList" parameterType="com.house.pojo.Page" resultMap="BaseResultMap">
+        select * from h_house
+        inner join h_user on house_user = id
+        <where>
+            <if test="params.houseName!=null and params.houseName!=''">
+                and house_name like '%${params.houseName}%'
+            </if>
+            <if test="params.houseAddress!=null and params.houseAddress!=''">
+                and house_address like '%${params.houseAddress}%'
+            </if>
+            <if test="params.name!=null and params.name!=''">
+                and name like '%${params.name}%'
+            </if>
+            <if test="params.houseState!=null and params.houseState!=''">
+                and house_state = #{params.houseState}
+            </if>
+            <if test="params.userId!=null and params.userId!=''">
+                and id = #{params.userId}
+            </if>
+        </where>
+        limit #{index}, #{currentCount}
+    </select>
+    <select id="getCount" parameterType="com.house.pojo.Page" resultType="java.lang.Integer">
+        select count(*) from h_house
+        inner join h_user on house_user = id
+        <where>
+            <if test="params.houseName!=null and params.houseName!=''">
+                and house_name like '%${params.houseName}%'
+            </if>
+            <if test="params.houseAddress!=null and params.houseAddress!=''">
+                and house_address like '%${params.houseAddress}%'
+            </if>
+            <if test="params.name!=null and params.name!=''">
+                and name like '%${params.name}%'
+            </if>
+            <if test="params.houseState!=null and params.houseState!=''">
+                and house_state = #{params.houseState}
+            </if>
+            <if test="params.userId!=null and params.userId!=''">
+                and id = #{params.userId}
+            </if>
+        </where>
+    </select>
 
 </mapper>

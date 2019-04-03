@@ -2,6 +2,9 @@ package com.house.mapper;
 
 import com.house.pojo.House;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.house.pojo.Page;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +16,17 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  */
 public interface HouseMapper extends BaseMapper<House> {
 
+    /**
+     * 分页查询
+     * @param page
+     * @return
+     */
+    List<House> getList(Page<House> page);
+
+    /**
+     * 查询总数
+     * @param page
+     * @return
+     */
+    Integer getCount(Page<House> page);
 }

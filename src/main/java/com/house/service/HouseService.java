@@ -2,6 +2,7 @@ package com.house.service;
 
 import com.house.pojo.House;
 import com.baomidou.mybatisplus.service.IService;
+import com.house.pojo.Page;
 
 /**
  * <p>
@@ -13,4 +14,10 @@ import com.baomidou.mybatisplus.service.IService;
  */
 public interface HouseService extends IService<House> {
 
+    /**
+     * 分页查询
+     * @param page
+     * @return
+     */
+    Page<House> getByPage(Page<House> page);
 }

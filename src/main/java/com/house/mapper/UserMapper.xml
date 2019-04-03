@@ -4,15 +4,54 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="User" type="com.house.pojo.User">
-        <id column="id" property="id" />
-        <result column="username" property="username" />
-        <result column="password" property="password" />
-        <result column="mobile" property="mobile" />
-        <result column="card" property="card" />
-        <result column="age" property="age" />
-        <result column="sex" property="sex" />
-        <result column="money" property="money" />
-        <result column="role" property="role" />
+        <id column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="password" property="password"/>
+        <result column="mobile" property="mobile"/>
+        <result column="name" property="name"/>
+        <result column="card" property="card"/>
+        <result column="age" property="age"/>
+        <result column="sex" property="sex"/>
+        <result column="money" property="money"/>
+        <result column="role" property="role"/>
     </resultMap>
+
+    <select id="getList" parameterType="com.house.pojo.Page" resultMap="User">
+        select * from h_user
+        <where>
+            role!=3
+            <if test="params.username!=null and params.username!=''">
+                and username like '%${params.username}%'
+            </if>
+            <if test="params.name!=null and params.name!=''">
+                and name like '%${params.name}%'
+            </if>
+            <if test="params.sex!=null and params.sex!=''">
+                and sex = #{params.user}
+            </if>
+            <if test="params.role!=null and params.role!=''">
+                and role = #{params.role}
+            </if>
+        </where>
+        limit #{index}, #{currentCount}
+    </select>
+    <select id="getCount" parameterType="com.house.pojo.Page" resultType="java.lang.Integer">
+        select count(*) from h_user
+        <where>
+            role!=3
+            <if test="params.username!=null and params.username!=''">
+                and username like '%${params.username}%'
+            </if>
+            <if test="params.name!=null and params.name!=''">
+                and name like '%${params.name}%'
+            </if>
+            <if test="params.sex!=null and params.sex!=''">
+                and sex = #{params.user}
+            </if>
+            <if test="params.role!=null and params.role!=''">
+                and role = #{params.role}
+            </if>
+        </where>
+    </select>
 
 </mapper>
