@@ -17,7 +17,7 @@
 <body class="beg-login-bg">
 <div class="beg-login-box">
     <header>
-        <h1>驾校预约系统 - 注册</h1>
+        <h1>房屋租赁系统 - 注册</h1>
     </header>
     <div class="beg-login-main">
         <form action="${pageContext.request.contextPath}/user/register.html" class="layui-form" method="post">
