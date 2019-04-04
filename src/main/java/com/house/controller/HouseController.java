@@ -2,9 +2,11 @@ package com.house.controller;
 
 
 import com.house.pojo.House;
+import com.house.pojo.Log;
 import com.house.pojo.Page;
 import com.house.pojo.User;
 import com.house.service.HouseService;
+import com.house.service.LogService;
 import com.house.utils.IdWorker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,6 +30,8 @@ public class HouseController {
 
     @Autowired
     private HouseService houseService;
+    @Autowired
+    private LogService logService;
     /**
      * 雪花算法生成id
      */
@@ -93,6 +97,30 @@ public class HouseController {
     public String updateHouse(House house) {
         houseService.updateById(house);
         return "redirect:/house/houseList.html";
+    }
+
+    /**
+     * 租房
+     * 将房屋的状态改为已租出
+     * 添加一条租房记录
+     * 当前是谁登录，这个房就是谁租的
+     */
+    @RequestMapping("/log{houseId}.html")
+    public String repair(@PathVariable String houseId, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        // 更新房屋状态
+        House house = houseService.selectById(houseId);
+        house.setHouseState(2);
+        houseService.updateById(house);
+        // 添加一条租房记录
+        Log log = new Log();
+        // 补全属性
+        log.setLogId(idWorker.nextId()+"");
+        log.setLogHouse(houseId);
+        log.setLogUser(user.getId());
+        log.setLogState(1);
+        logService.insert(log);
+        return "";
     }
 
 }

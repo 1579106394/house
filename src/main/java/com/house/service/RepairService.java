@@ -1,5 +1,6 @@
 package com.house.service;
 
+import com.house.pojo.Page;
 import com.house.pojo.Repair;
 import com.baomidou.mybatisplus.service.IService;
 
@@ -13,4 +14,10 @@ import com.baomidou.mybatisplus.service.IService;
  */
 public interface RepairService extends IService<Repair> {
 
+    /**
+     * 分页查询
+     * @param page
+     * @return
+     */
+    Page<Repair> getByPage(Page<Repair> page);
 }

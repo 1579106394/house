@@ -27,7 +27,7 @@
                 and name like '%${params.name}%'
             </if>
             <if test="params.sex!=null and params.sex!=''">
-                and sex = #{params.user}
+                and sex = #{params.sex}
             </if>
             <if test="params.role!=null and params.role!=''">
                 and role = #{params.role}
@@ -46,7 +46,7 @@
                 and name like '%${params.name}%'
             </if>
             <if test="params.sex!=null and params.sex!=''">
-                and sex = #{params.user}
+                and sex = #{params.sex}
             </if>
             <if test="params.role!=null and params.role!=''">
                 and role = #{params.role}

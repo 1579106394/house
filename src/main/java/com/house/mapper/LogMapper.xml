@@ -4,31 +4,78 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="Log" type="com.house.pojo.Log">
-        <id column="log_id" property="logId" />
-        <result column="log_house" property="logHouse" />
-        <result column="log_user" property="logUser" />
-        <result column="log_state" property="logState" />
+        <id column="log_id" property="logId"/>
+        <result column="log_house" property="logHouse"/>
+        <result column="log_user" property="logUser"/>
+        <result column="log_state" property="logState"/>
         <association property="house" javaType="House">
-            <id column="house_id" property="houseId" />
-            <result column="house_name" property="houseName" />
-            <result column="house_area" property="houseArea" />
-            <result column="house_address" property="houseAddress" />
-            <result column="house_price" property="housePrice" />
-            <result column="house_content" property="houseContent" />
-            <result column="house_state" property="houseState" />
-            <result column="house_comment" property="houseComment" />
+            <id column="house_id" property="houseId"/>
+            <result column="house_name" property="houseName"/>
+            <result column="house_area" property="houseArea"/>
+            <result column="house_address" property="houseAddress"/>
+            <result column="house_price" property="housePrice"/>
+            <result column="house_content" property="houseContent"/>
+            <result column="house_state" property="houseState"/>
+            <result column="house_comment" property="houseComment"/>
         </association>
         <association property="user" javaType="User">
-            <id column="id" property="id" />
-            <result column="username" property="username" />
-            <result column="password" property="password" />
-            <result column="mobile" property="mobile" />
-            <result column="card" property="card" />
-            <result column="age" property="age" />
-            <result column="sex" property="sex" />
-            <result column="money" property="money" />
-            <result column="role" property="role" />
+            <id column="id" property="id"/>
+            <result column="username" property="username"/>
+            <result column="password" property="password"/>
+            <result column="name" property="name"/>
+            <result column="mobile" property="mobile"/>
+            <result column="card" property="card"/>
+            <result column="age" property="age"/>
+            <result column="sex" property="sex"/>
+            <result column="money" property="money"/>
+            <result column="role" property="role"/>
         </association>
     </resultMap>
+    <select id="getList" parameterType="com.house.pojo.Page" resultMap="Log">
+        select * from h_log
+        inner join h_house on log_house = house_id
+        inner join h_user on log_user = id
+        <where>
+            <if test="params.userId!=null and params.userId!=''">
+                and id = #{params.userId}
+            </if>
+            <if test="params.company!=null and params.company!=''">
+                and house_user = #{params.company}
+            </if>
+            <if test="params.logState!=null and params.logState!=''">
+                and log_state = #{params.logState}
+            </if>
+            <if test="params.userName!=null and params.userName!=''">
+                and name like '%${params.userName}%'
+            </if>
+            <if test="params.houseName!=null and params.houseName!=''">
+                and house_name like '%${params.houseNmae}%'
+            </if>
+        </where>
+        order by log_state asc
+        limit #{index},#{currentCount}
+    </select>
+    <select id="getCount" parameterType="com.house.pojo.Page" resultType="java.lang.Integer">
+        select count(*) from h_log
+        inner join h_house on log_house = house_id
+        inner join h_user on log_user = id
+        <where>
+            <if test="params.userId!=null and params.userId!=''">
+                and id = #{params.userId}
+            </if>
+            <if test="params.company!=null and params.company!=''">
+                and house_user = #{params.company}
+            </if>
+            <if test="params.logState!=null and params.logState!=''">
+                and log_state = #{params.logState}
+            </if>
+            <if test="params.userName!=null and params.userName!=''">
+                and name like '%${params.userName}%'
+            </if>
+            <if test="params.houseName!=null and params.houseName!=''">
+                and house_name like '%${params.houseNmae}%'
+            </if>
+        </where>
+    </select>
 
 </mapper>

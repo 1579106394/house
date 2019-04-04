@@ -1,7 +1,10 @@
 package com.house.mapper;
 
+import com.house.pojo.Page;
 import com.house.pojo.Repair;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +16,17 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  */
 public interface RepairMapper extends BaseMapper<Repair> {
 
+    /**
+     * 分页查询
+     * @param page
+     * @return
+     */
+    List<Repair> getList(Page<Repair> page);
+
+    /**
+     * 查询总数
+     * @param page
+     * @return
+     */
+    Integer getCount(Page<Repair> page);
 }

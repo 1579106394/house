@@ -9,6 +9,16 @@
             </li>
             <li class="layui-nav-item"><a href="${pageContext.request.contextPath}/user/userList.html">用户管理</a>
             </li>
+            <li class="layui-nav-item"><a href="${pageContext.request.contextPath}/log/logList.html">租用记录</a>
+            </li>
+            <li class="layui-nav-item"><a href="${pageContext.request.contextPath}/user/editInfo.jsp">个人信息</a>
+            </li>
+            <li class="layui-nav-item"><a href="${pageContext.request.contextPath}/user/addMoney.jsp">充值</a>
+            </li>
+            <li class="layui-nav-item"><a href="${pageContext.request.contextPath}/repair/repairList.html">报修管理</a>
+            </li>
+            <li class="layui-nav-item"><a href="${pageContext.request.contextPath}/help/helpList.html">帮助中心</a>
+            </li>
 
         </ul>
     </div>

@@ -90,14 +90,14 @@
                             </div>
                             <div class="layui-input-inline">
                                 <select name="params[sex]">
-                                    <option>请选择性别</option>
+                                    <option value="">请选择性别</option>
                                     <option value="1">男</option>
                                     <option value="2">女</option>
                                 </select>
                             </div>
                             <div class="layui-input-inline">
                                 <select name="params[role]">
-                                    <option>请选择用户类型</option>
+                                    <option value="">请选择用户类型</option>
                                     <option value="1">租户</option>
                                     <option value="2">租赁公司</option>
                                 </select>

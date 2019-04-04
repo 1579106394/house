@@ -4,9 +4,27 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.house.pojo.Help">
-        <id column="help_id" property="helpId" />
-        <result column="help_content" property="helpContent" />
-        <result column="help_title" property="helpTitle" />
+        <id column="help_id" property="helpId"/>
+        <result column="help_content" property="helpContent"/>
+        <result column="help_title" property="helpTitle"/>
     </resultMap>
+    <select id="getList" parameterType="com.house.pojo.Page" resultMap="BaseResultMap">
+        select * from h_help
+        <where>
+            <if test="params.helpTitle!=null and params.helpTitle!=''">
+                and help_title like '%${params.helpTitle}%'
+            </if>
+        </where>
+        limit #{index}, #{currentCount}
+    </select>
+
+    <select id="getCount" parameterType="com.house.pojo.Page" resultType="java.lang.Integer">
+        select count(*) from h_help
+        <where>
+            <if test="params.helpTitle!=null and params.helpTitle!=''">
+                and help_title like '%${params.helpTitle}%'
+            </if>
+        </where>
+    </select>
 
 </mapper>

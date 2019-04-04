@@ -117,5 +117,31 @@ public class UserController {
         return "redirect:/user/userList.html";
     }
 
+    /**
+     * 用户充值
+     * 谁登录就是谁充值
+     * 修改用户钱数
+     * 充值成功跳转到房屋列表
+     */
+    @RequestMapping("/addMoney.html")
+    public String addMoney(User user, HttpSession session) {
+        User u = (User) session.getAttribute("user");
+        u.setMoney(u.getMoney() + user.getMoney());
+        userService.updateById(u);
+        return "redirect:/house/houseList.html";
+    }
+
+    /**
+     * 修改个人信息
+     * 修改完成后，更新信息，跳转到房屋列表
+     * session中的用户信息也需要更新
+     */
+    @RequestMapping("/updateInfo.html")
+    public String updateInfo(User user, HttpSession session) {
+        userService.updateById(user);
+        session.setAttribute("user", user);
+        return "redirect:/house/houseList.html";
+    }
+
 }
 

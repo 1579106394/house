@@ -6,7 +6,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>房屋列表</title>
+    <title>租房记录列表</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/layui/css/layui.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/tp5page.css">
     <script type="text/javascript" src="${pageContext.request.contextPath}/layui/lay/modules/jquery.js"></script>
@@ -33,33 +33,19 @@
          * 删除提示函数
          * @param id
          */
-        function deleteHouse(id) {
+        function deleteLog(id) {
             layer.confirm('确定删除吗?', {icon: 2, title: '提示'}, function (index) {
-                window.location.href = "${pageContext.request.contextPath}/house/deleteHouse" + id + ".html"
+                window.location.href = "${pageContext.request.contextPath}/log/deleteLog" + id + ".html"
                 layer.close(index);
             });
         }
 
         /**
-         * 查看图片
+         * 退房
          */
-        function lookImg(imgUrl) {
-            layer.alert('<img src="' + imgUrl + '"/>')
-        }
-
-        /**
-         * 查看备注
-         */
-        function lookContent(content) {
-            layer.alert(content)
-        }
-
-        /**
-         * 租房
-         */
-        function logHouse(id) {
-            layer.confirm('确定租用这套房吗?', {icon: 1, title: '提示'}, function (index) {
-                window.location.href = "${pageContext.request.contextPath}/house/log" + id + ".html"
+        function checkOut(id) {
+            layer.confirm('确定退房吗?', {icon: 1, title: '提示'}, function (index) {
+                window.location.href = "${pageContext.request.contextPath}/log/checkOut" + id + ".html"
                 layer.close(index);
             });
         }
@@ -81,32 +67,27 @@
         <!-- 内容主体区域 -->
         <div style="padding: 15px;">
             <fieldset class="layui-elem-field">
-                <legend>房屋管理 - 房屋列表</legend>
+                <legend>租房记录管理 - 租房记录列表</legend>
                 <div class="layui-field-box">
                     <form id="listForm" class="layui-form"
-                          action="${pageContext.request.contextPath}/house/houseList.html" method="post">
+                          action="${pageContext.request.contextPath}/log/logList.html" method="post">
                         <input type="hidden" id="currentPage" name="currentPage" value="${page.currentPage}">
                         <div class="layui-form-item" style="text-align:center;">
                             <div class="layui-input-inline">
-                                <input autocomplete="off" class="layui-input" placeholder="请输入房屋名" type="text"
+                                <input autocomplete="off" class="layui-input" placeholder="房屋名" type="text"
                                        name="params[houseName]" value="${page.params.houseName}">
                             </div>
                             <div class="layui-input-inline">
-                                <input autocomplete="off" class="layui-input" placeholder="请输入地址" type="text"
-                                       name="params[houseAddress]" value="${page.params.houseAddress}">
+                                <input autocomplete="off" class="layui-input" placeholder="用户" type="text"
+                                       name="params[userName]" value="${page.params.userName}">
                             </div>
                             <div class="layui-input-inline">
-                                <input autocomplete="off" class="layui-input" placeholder="请输入发布人" type="text"
-                                       name="params[name]" value="${page.params.name}">
-                            </div>
-                            <div class="layui-input-inline">
-                                <select name="params[houseState]">
+                                <select name="params[logState]">
                                     <option value="">请选择出租状态</option>
                                     <option value="1">未租出</option>
                                     <option value="2">已租出</option>
                                 </select>
                             </div>
-
                             <div class="layui-inline" style="text-align:left;">
                                 <div class="layui-input-inline">
                                     <button class="layui-btn"><i class="layui-icon">&#xe615;</i>查询</button>
@@ -116,71 +97,40 @@
                     </form>
                     <hr>
 
-                    <div class="layui-btn-group">
-                        <a class="layui-btn layui-btn-xs layui-btn-normal"
-                           href="${pageContext.request.contextPath}/house/addHouse.jsp">
-                            <i class="layui-icon">&#xe654;</i>新增
-                        </a>
-                    </div>
                     <hr>
                     <form id="deleteForm" method="post">
                         <table class="layui-table">
-                            <colgroup>
-                                <col width="150">
-                                <col width="150">
-                                <col>
-                                <col>
-                            </colgroup>
                             <thead>
                             <tr>
+                                <th>租客</th>
                                 <th>房屋名</th>
-                                <th>发布人</th>
-                                <th>建筑面积</th>
-                                <th>地址</th>
-                                <th>房租：元/月</th>
                                 <th>状态</th>
-                                <th>备注</th>
                                 <th style="text-align:center;">操作</th>
                             </tr>
                             </thead>
                             <tbody>
 
-                            <c:forEach items="${page.list}" var="house" varStatus="i">
+                            <c:forEach items="${page.list}" var="log" varStatus="i">
                                 <tr>
-                                    <td>${house.houseName}</td>
-                                    <td>${house.user.name}</td>
-                                    <td>${house.houseArea}</td>
-                                    <td>${house.houseAddress}</td>
-                                    <td>${house.housePrice}</td>
-                                    <td>${house.houseState==1?"未租出":"已租出"}</td>
-                                    <td>${house.houseComment}</td>
+                                    <td>${log.user.name}</td>
+                                    <td>${log.house.houseName}</td>
+                                    <td>${log.logState==1?"正在租用":"已退房"}</td>
                                     <td class="text-center">
                                         <div class="layui-btn-group">
-                                            <a class="layui-btn layui-btn-xs layui-btn-normal"
-                                               href="${pageContext.request.contextPath}/house/getHouse/${house.houseId}.html">
-                                                <i class="layui-icon">&#xe642;</i>编辑
-                                            </a>
-                                            <a class="layui-btn layui-btn-xs layui-btn-danger"
-                                               href="javascript:void(0)"
-                                               onclick="deleteHouse('${house.houseId}')">
-                                                <i class="layui-icon">&#xe640;</i>删除
-                                            </a>
-                                            <c:if test="${house.houseState==1}">
-                                                <a class="layui-btn layui-btn-xs"
-                                                   href="javascript:void(0);"
-                                                   onclick="logHouse('${house.houseId}')">
-                                                    <i class="layui-icon">&#xe667;</i>租房
+                                            <c:if test="${log.logState==2}">
+                                                <a class="layui-btn layui-btn-xs layui-btn-danger"
+                                                   href="javascript:void(0)"
+                                                   onclick="deleteLog('${log.logId}')">
+                                                    <i class="layui-icon">&#xe640;</i>删除
                                                 </a>
                                             </c:if>
-                                            <a class="layui-btn layui-btn-xs"
-                                               href="javascript:void(0);" onclick="lookImg('${house.houseImg}')">
-                                                <i class="layui-icon">&#xe63a;</i>图片
-                                            </a>
-                                            <a class="layui-btn layui-btn-xs"
-                                               href="javascript:void(0);"
-                                               onclick="lookContent('${house.houseContent}')">
-                                                <i class="layui-icon">&#xe63a;</i>描述
-                                            </a>
+                                            <c:if test="${log.logState==1}">
+                                                <a class="layui-btn layui-btn-xs"
+                                                   href="javascript:void(0);"
+                                                   onclick="checkOut('${log.logId}')">
+                                                    <i class="layui-icon">&#xe63a;</i>退房
+                                                </a>
+                                            </c:if>
                                         </div>
                                     </td>
                                 </tr>

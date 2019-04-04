@@ -6,7 +6,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>房屋列表</title>
+    <title>报修列表</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/layui/css/layui.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/tp5page.css">
     <script type="text/javascript" src="${pageContext.request.contextPath}/layui/lay/modules/jquery.js"></script>
@@ -33,35 +33,18 @@
          * 删除提示函数
          * @param id
          */
-        function deleteHouse(id) {
+        function deleteRepair(id) {
             layer.confirm('确定删除吗?', {icon: 2, title: '提示'}, function (index) {
-                window.location.href = "${pageContext.request.contextPath}/house/deleteHouse" + id + ".html"
+                window.location.href = "${pageContext.request.contextPath}/repair/deleteRepair" + id + ".html"
                 layer.close(index);
             });
         }
 
         /**
-         * 查看图片
-         */
-        function lookImg(imgUrl) {
-            layer.alert('<img src="' + imgUrl + '"/>')
-        }
-
-        /**
-         * 查看备注
+         * 查看原因
          */
         function lookContent(content) {
             layer.alert(content)
-        }
-
-        /**
-         * 租房
-         */
-        function logHouse(id) {
-            layer.confirm('确定租用这套房吗?', {icon: 1, title: '提示'}, function (index) {
-                window.location.href = "${pageContext.request.contextPath}/house/log" + id + ".html"
-                layer.close(index);
-            });
         }
 
     </script>
@@ -81,30 +64,19 @@
         <!-- 内容主体区域 -->
         <div style="padding: 15px;">
             <fieldset class="layui-elem-field">
-                <legend>房屋管理 - 房屋列表</legend>
+                <legend>报修管理 - 报修列表</legend>
                 <div class="layui-field-box">
                     <form id="listForm" class="layui-form"
-                          action="${pageContext.request.contextPath}/house/houseList.html" method="post">
+                          action="${pageContext.request.contextPath}/repair/repairList.html" method="post">
                         <input type="hidden" id="currentPage" name="currentPage" value="${page.currentPage}">
                         <div class="layui-form-item" style="text-align:center;">
                             <div class="layui-input-inline">
-                                <input autocomplete="off" class="layui-input" placeholder="请输入房屋名" type="text"
+                                <input autocomplete="off" class="layui-input" placeholder="房屋名" type="text"
                                        name="params[houseName]" value="${page.params.houseName}">
                             </div>
                             <div class="layui-input-inline">
-                                <input autocomplete="off" class="layui-input" placeholder="请输入地址" type="text"
-                                       name="params[houseAddress]" value="${page.params.houseAddress}">
-                            </div>
-                            <div class="layui-input-inline">
-                                <input autocomplete="off" class="layui-input" placeholder="请输入发布人" type="text"
-                                       name="params[name]" value="${page.params.name}">
-                            </div>
-                            <div class="layui-input-inline">
-                                <select name="params[houseState]">
-                                    <option value="">请选择出租状态</option>
-                                    <option value="1">未租出</option>
-                                    <option value="2">已租出</option>
-                                </select>
+                                <input autocomplete="off" class="layui-input" placeholder="用户" type="text"
+                                       name="params[userName]" value="${page.params.userName}">
                             </div>
 
                             <div class="layui-inline" style="text-align:left;">
@@ -118,68 +90,43 @@
 
                     <div class="layui-btn-group">
                         <a class="layui-btn layui-btn-xs layui-btn-normal"
-                           href="${pageContext.request.contextPath}/house/addHouse.jsp">
+                           href="${pageContext.request.contextPath}/repair/toRepair.html">
                             <i class="layui-icon">&#xe654;</i>新增
                         </a>
                     </div>
                     <hr>
                     <form id="deleteForm" method="post">
                         <table class="layui-table">
-                            <colgroup>
-                                <col width="150">
-                                <col width="150">
-                                <col>
-                                <col>
-                            </colgroup>
                             <thead>
                             <tr>
-                                <th>房屋名</th>
-                                <th>发布人</th>
-                                <th>建筑面积</th>
-                                <th>地址</th>
-                                <th>房租：元/月</th>
-                                <th>状态</th>
-                                <th>备注</th>
+                                <th>报修人</th>
+                                <th>报修房屋</th>
+                                <th>报修时间</th>
                                 <th style="text-align:center;">操作</th>
                             </tr>
                             </thead>
                             <tbody>
 
-                            <c:forEach items="${page.list}" var="house" varStatus="i">
+                            <c:forEach items="${page.list}" var="repair" varStatus="i">
                                 <tr>
-                                    <td>${house.houseName}</td>
-                                    <td>${house.user.name}</td>
-                                    <td>${house.houseArea}</td>
-                                    <td>${house.houseAddress}</td>
-                                    <td>${house.housePrice}</td>
-                                    <td>${house.houseState==1?"未租出":"已租出"}</td>
-                                    <td>${house.houseComment}</td>
+                                    <td>${repair.user.name}</td>
+                                    <td>${repair.house.houseName}</td>
+                                    <td>${repair.repairTime}</td>
                                     <td class="text-center">
                                         <div class="layui-btn-group">
                                             <a class="layui-btn layui-btn-xs layui-btn-normal"
-                                               href="${pageContext.request.contextPath}/house/getHouse/${house.houseId}.html">
+                                               href="${pageContext.request.contextPath}/repair/getRepair/${repair.repairId}.html">
                                                 <i class="layui-icon">&#xe642;</i>编辑
                                             </a>
                                             <a class="layui-btn layui-btn-xs layui-btn-danger"
                                                href="javascript:void(0)"
-                                               onclick="deleteHouse('${house.houseId}')">
+                                               onclick="deleteRepair('${repair.repairId}')">
                                                 <i class="layui-icon">&#xe640;</i>删除
-                                            </a>
-                                            <c:if test="${house.houseState==1}">
-                                                <a class="layui-btn layui-btn-xs"
-                                                   href="javascript:void(0);"
-                                                   onclick="logHouse('${house.houseId}')">
-                                                    <i class="layui-icon">&#xe667;</i>租房
-                                                </a>
-                                            </c:if>
-                                            <a class="layui-btn layui-btn-xs"
-                                               href="javascript:void(0);" onclick="lookImg('${house.houseImg}')">
-                                                <i class="layui-icon">&#xe63a;</i>图片
                                             </a>
                                             <a class="layui-btn layui-btn-xs"
                                                href="javascript:void(0);"
-                                               onclick="lookContent('${house.houseContent}')">
-                                                <i class="layui-icon">&#xe63a;</i>描述
+                                               onclick="lookContent('${repair.repairContent}')">
+                                                <i class="layui-icon">&#xe63a;</i>查看原因
                                             </a>
                                         </div>
                                     </td>
