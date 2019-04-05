@@ -9,7 +9,7 @@
         <result column="repair_user" property="repairUser"/>
         <result column="repair_time" property="repairTime"/>
         <result column="repair_content" property="repairContent"/>
-        <association property="house" javaType="House">
+        <association property="house" javaType="com.house.pojo.House">
             <id column="house_id" property="houseId"/>
             <result column="house_name" property="houseName"/>
             <result column="house_area" property="houseArea"/>
@@ -19,7 +19,7 @@
             <result column="house_state" property="houseState"/>
             <result column="house_comment" property="houseComment"/>
         </association>
-        <association property="user" javaType="User">
+        <association property="user" javaType="com.house.pojo.User">
             <id column="id" property="id"/>
             <result column="username" property="username"/>
             <result column="password" property="password"/>
@@ -41,6 +41,9 @@
             <if test="params.userId!=null and params.userId!=''">
                 and id = #{params.userId}
             </if>
+            <if test="params.company!=null and params.company!=''">
+                and house_user = #{params.company}
+            </if>
             <if test="params.houseName!=null and params.houseName!=''">
                 and house_name like '%${params.houseName}%'
             </if>
@@ -59,6 +62,9 @@
         <where>
             <if test="params.userId!=null and params.userId!=''">
                 and id = #{params.userId}
+            </if>
+            <if test="params.company!=null and params.company!=''">
+                and house_user = #{params.company}
             </if>
             <if test="params.houseName!=null and params.houseName!=''">
                 and house_name like '%${params.houseName}%'

@@ -115,13 +115,14 @@
                         </div>
                     </form>
                     <hr>
-
-                    <div class="layui-btn-group">
-                        <a class="layui-btn layui-btn-xs layui-btn-normal"
-                           href="${pageContext.request.contextPath}/house/addHouse.jsp">
-                            <i class="layui-icon">&#xe654;</i>新增
-                        </a>
-                    </div>
+                    <c:if test="${sessionScope.user.role!=1}">
+                        <div class="layui-btn-group">
+                            <a class="layui-btn layui-btn-xs layui-btn-normal"
+                               href="${pageContext.request.contextPath}/house/addHouse.jsp">
+                                <i class="layui-icon">&#xe654;</i>新增
+                            </a>
+                        </div>
+                    </c:if>
                     <hr>
                     <form id="deleteForm" method="post">
                         <table class="layui-table">
@@ -156,16 +157,18 @@
                                     <td>${house.houseComment}</td>
                                     <td class="text-center">
                                         <div class="layui-btn-group">
-                                            <a class="layui-btn layui-btn-xs layui-btn-normal"
-                                               href="${pageContext.request.contextPath}/house/getHouse/${house.houseId}.html">
-                                                <i class="layui-icon">&#xe642;</i>编辑
-                                            </a>
-                                            <a class="layui-btn layui-btn-xs layui-btn-danger"
-                                               href="javascript:void(0)"
-                                               onclick="deleteHouse('${house.houseId}')">
-                                                <i class="layui-icon">&#xe640;</i>删除
-                                            </a>
-                                            <c:if test="${house.houseState==1}">
+                                            <c:if test="${sessionScope.user.role!=1}">
+                                                <a class="layui-btn layui-btn-xs layui-btn-normal"
+                                                   href="${pageContext.request.contextPath}/house/getHouse/${house.houseId}.html">
+                                                    <i class="layui-icon">&#xe642;</i>编辑
+                                                </a>
+                                                <a class="layui-btn layui-btn-xs layui-btn-danger"
+                                                   href="javascript:void(0)"
+                                                   onclick="deleteHouse('${house.houseId}')">
+                                                    <i class="layui-icon">&#xe640;</i>删除
+                                                </a>
+                                            </c:if>
+                                            <c:if test="${house.houseState==1 and sessionScope.user.role==1}">
                                                 <a class="layui-btn layui-btn-xs"
                                                    href="javascript:void(0);"
                                                    onclick="logHouse('${house.houseId}')">

@@ -7,16 +7,24 @@
         <ul class="layui-nav layui-nav-tree" lay-filter="test">
             <li class="layui-nav-item"><a href="${pageContext.request.contextPath}/house/houseList.html">房屋管理</a>
             </li>
-            <li class="layui-nav-item"><a href="${pageContext.request.contextPath}/user/userList.html">用户管理</a>
-            </li>
+            <c:if test="${sessionScope.user.role == 3}">
+                <li class="layui-nav-item"><a href="${pageContext.request.contextPath}/user/userList.html">用户管理</a>
+                </li>
+            </c:if>
             <li class="layui-nav-item"><a href="${pageContext.request.contextPath}/log/logList.html">租用记录</a>
             </li>
-            <li class="layui-nav-item"><a href="${pageContext.request.contextPath}/user/editInfo.jsp">个人信息</a>
+            <li class="layui-nav-item"><a href="${pageContext.request.contextPath}/money/moneyList.html">租金记录</a>
             </li>
-            <li class="layui-nav-item"><a href="${pageContext.request.contextPath}/user/addMoney.jsp">充值</a>
-            </li>
-            <li class="layui-nav-item"><a href="${pageContext.request.contextPath}/repair/repairList.html">报修管理</a>
-            </li>
+            <c:if test="${sessionScope.user.role != 3}">
+                <li class="layui-nav-item"><a href="${pageContext.request.contextPath}/user/editInfo.jsp">个人信息</a>
+                </li>
+            </c:if>
+            <c:if test="${sessionScope.user.role == 1}">
+                <li class="layui-nav-item"><a href="${pageContext.request.contextPath}/user/addMoney.jsp">充值</a>
+                </li>
+                <li class="layui-nav-item"><a href="${pageContext.request.contextPath}/repair/repairList.html">报修管理</a>
+                </li>
+            </c:if>
             <li class="layui-nav-item"><a href="${pageContext.request.contextPath}/help/helpList.html">帮助中心</a>
             </li>
 

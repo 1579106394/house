@@ -120,7 +120,7 @@ public class HouseController {
         log.setLogUser(user.getId());
         log.setLogState(1);
         logService.insert(log);
-        return "";
+        return "redirect:/repair/repairList.html";
     }
 
 }

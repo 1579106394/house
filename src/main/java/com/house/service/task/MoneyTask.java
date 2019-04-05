@@ -1,4 +1,4 @@
-package com.house.task;
+package com.house.service.task;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.house.pojo.House;
@@ -12,6 +12,7 @@ import com.house.service.UserService;
 import com.house.utils.IdWorker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -24,6 +25,7 @@ import java.util.List;
  * @author: 杨德石
  * @date: 2019/4/4 0004 下午 9:46
  */
+@Service
 public class MoneyTask {
 
     @Autowired
@@ -47,11 +49,11 @@ public class MoneyTask {
      * 记录扣费信息，时间为本月
      * 如果用户房租小于等于0，自动退房，修改房屋状态
      *
-     * @throws Exception
      */
     // @Scheduled(cron = "0 50 23 L * ? ")
     @Scheduled(cron = "0 0 0 * * ?")
-    public void monetTask() throws Exception {
+    public void monetTask() {
+        System.out.println("执行了");
         // 本月时间
         String nowMonth = new SimpleDateFormat("yyyy-MM").format(new Date());
         // 查询所有正在租用的住房记录
@@ -79,8 +81,9 @@ public class MoneyTask {
             Money money = new Money();
             money.setMoneyId(idWorker.nextId() + "");
             money.setMoneyUser(user.getId());
-            money.setMoneyUser(nowMonth);
+            money.setMoneyMonth(nowMonth);
             money.setMoneyMoney(house.getHousePrice());
+            money.setMoneyHouse(house.getHouseId());
             moneyService.insert(money);
         }
     }

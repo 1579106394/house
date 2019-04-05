@@ -117,7 +117,7 @@
                                     <td>${log.logState==1?"正在租用":"已退房"}</td>
                                     <td class="text-center">
                                         <div class="layui-btn-group">
-                                            <c:if test="${log.logState==2}">
+                                            <c:if test="${log.logState==2 and sessionScope.user.role != 1}">
                                                 <a class="layui-btn layui-btn-xs layui-btn-danger"
                                                    href="javascript:void(0)"
                                                    onclick="deleteLog('${log.logId}')">

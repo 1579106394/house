@@ -6,7 +6,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>报修列表</title>
+    <title>租金缴费列表</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/layui/css/layui.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/tp5page.css">
     <script type="text/javascript" src="${pageContext.request.contextPath}/layui/lay/modules/jquery.js"></script>
@@ -19,6 +19,15 @@
         layui.use('form', function () {  //如果只加载一个模块，可以不填数组。如：layui.use('form')
             var form = layui.form //获取form模块
         });
+
+        layui.use('laydate', function () {
+            var laydate = layui.laydate;
+            laydate.render({
+                elem: '#month' //指定元素
+                , type: 'month'
+                , format: 'yyyy-MM'
+            });
+        })
 
         /**
          * 分页函数
@@ -33,18 +42,11 @@
          * 删除提示函数
          * @param id
          */
-        function deleteRepair(id) {
+        function deleteMoney(id) {
             layer.confirm('确定删除吗?', {icon: 2, title: '提示'}, function (index) {
-                window.location.href = "${pageContext.request.contextPath}/repair/deleteRepair" + id + ".html"
+                window.location.href = "${pageContext.request.contextPath}/money/deleteMoney" + id + ".html"
                 layer.close(index);
             });
-        }
-
-        /**
-         * 查看原因
-         */
-        function lookContent(content) {
-            layer.alert(content)
         }
 
     </script>
@@ -64,10 +66,10 @@
         <!-- 内容主体区域 -->
         <div style="padding: 15px;">
             <fieldset class="layui-elem-field">
-                <legend>报修管理 - 报修列表</legend>
+                <legend>租金缴费管理 - 租金缴费列表</legend>
                 <div class="layui-field-box">
                     <form id="listForm" class="layui-form"
-                          action="${pageContext.request.contextPath}/repair/repairList.html" method="post">
+                          action="${pageContext.request.contextPath}/money/moneyList.html" method="post">
                         <input type="hidden" id="currentPage" name="currentPage" value="${page.currentPage}">
                         <div class="layui-form-item" style="text-align:center;">
                             <div class="layui-input-inline">
@@ -78,7 +80,10 @@
                                 <input autocomplete="off" class="layui-input" placeholder="用户" type="text"
                                        name="params[userName]" value="${page.params.userName}">
                             </div>
-
+                            <div class="layui-input-inline xbs768">
+                                <input class="layui-input" name="params[moneyMonth]" value="${page.params.moneyMonth}"
+                                       placeholder="请选择月份" id="month">
+                            </div>
                             <div class="layui-inline" style="text-align:left;">
                                 <div class="layui-input-inline">
                                     <button class="layui-btn"><i class="layui-icon">&#xe615;</i>查询</button>
@@ -88,48 +93,35 @@
                     </form>
                     <hr>
 
-                    <div class="layui-btn-group">
-                        <a class="layui-btn layui-btn-xs layui-btn-normal"
-                           href="${pageContext.request.contextPath}/repair/toRepair.html">
-                            <i class="layui-icon">&#xe654;</i>新增
-                        </a>
-                    </div>
                     <hr>
                     <form id="deleteForm" method="post">
                         <table class="layui-table">
                             <thead>
                             <tr>
-                                <th>报修人</th>
-                                <th>报修房屋</th>
-                                <th>报修时间</th>
+                                <th>租客</th>
+                                <th>房屋</th>
+                                <th>缴费</th>
+                                <th>月份</th>
                                 <th style="text-align:center;">操作</th>
                             </tr>
                             </thead>
                             <tbody>
 
-                            <c:forEach items="${page.list}" var="repair" varStatus="i">
+                            <c:forEach items="${page.list}" var="money" varStatus="i">
                                 <tr>
-                                    <td>${repair.user.name}</td>
-                                    <td>${repair.house.houseName}</td>
-                                    <td>${repair.repairTime}</td>
+                                    <td>${money.user.name}</td>
+                                    <td>${money.house.houseName}</td>
+                                    <td>${money.moneyMoney}</td>
+                                    <td>${money.moneyMonth}</td>
                                     <td class="text-center">
                                         <div class="layui-btn-group">
-                                            <c:if test="${sessionScope.user.id != repair.user.id}">
-                                                <a class="layui-btn layui-btn-xs layui-btn-normal"
-                                                   href="${pageContext.request.contextPath}/repair/getRepair/${repair.repairId}.html">
-                                                    <i class="layui-icon">&#xe642;</i>编辑
+                                            <c:if test="${sessionScope.user.role!=1}">
+                                                <a class="layui-btn layui-btn-xs layui-btn-danger"
+                                                   href="javascript:void(0)"
+                                                   onclick="deleteMoney('${money.moneyId}')">
+                                                    <i class="layui-icon">&#xe640;</i>删除
                                                 </a>
                                             </c:if>
-                                            <a class="layui-btn layui-btn-xs layui-btn-danger"
-                                               href="javascript:void(0)"
-                                               onclick="deleteRepair('${repair.repairId}')">
-                                                <i class="layui-icon">&#xe640;</i>删除
-                                            </a>
-                                            <a class="layui-btn layui-btn-xs"
-                                               href="javascript:void(0);"
-                                               onclick="lookContent('${repair.repairContent}')">
-                                                <i class="layui-icon">&#xe63a;</i>查看原因
-                                            </a>
                                         </div>
                                     </td>
                                 </tr>
@@ -139,6 +131,9 @@
                         </table>
                     </form>
                     总条数：${page.totalCount}
+                    <c:if test="${sessionScope.user.role!=1}">
+                        ，总收入：${page.params.totalMoney} 元
+                    </c:if>
                 </div>
                 <div style="border-top: 1px dotted #e2e2e2; text-align: left;">
                     <ul class="pagination">

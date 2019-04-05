@@ -85,10 +85,12 @@
                     <hr>
 
                     <div class="layui-btn-group">
-                        <a class="layui-btn layui-btn-xs layui-btn-normal"
-                           href="${pageContext.request.contextPath}/help/addHelp.jsp">
-                            <i class="layui-icon">&#xe654;</i>新增
-                        </a>
+                        <c:if test="${sessionScope.user.role==3}">
+                            <a class="layui-btn layui-btn-xs layui-btn-normal"
+                               href="${pageContext.request.contextPath}/help/addHelp.jsp">
+                                <i class="layui-icon">&#xe654;</i>新增
+                            </a>
+                        </c:if>
                     </div>
                     <hr>
                     <form id="deleteForm" method="post">
@@ -112,15 +114,17 @@
                                     <td>${help.helpTitle}</td>
                                     <td class="text-center">
                                         <div class="layui-btn-group">
-                                            <a class="layui-btn layui-btn-xs layui-btn-normal"
-                                               href="${pageContext.request.contextPath}/help/getHelp/${help.helpId}.html">
-                                                <i class="layui-icon">&#xe642;</i>编辑
-                                            </a>
-                                            <a class="layui-btn layui-btn-xs layui-btn-danger"
-                                               href="javascript:void(0)"
-                                               onclick="deleteHelp('${help.helpId}')">
-                                                <i class="layui-icon">&#xe640;</i>删除
-                                            </a>
+                                            <c:if test="${sessionScope.user.role==3}">
+                                                <a class="layui-btn layui-btn-xs layui-btn-normal"
+                                                   href="${pageContext.request.contextPath}/help/getHelp/${help.helpId}.html">
+                                                    <i class="layui-icon">&#xe642;</i>编辑
+                                                </a>
+                                                <a class="layui-btn layui-btn-xs layui-btn-danger"
+                                                   href="javascript:void(0)"
+                                                   onclick="deleteHelp('${help.helpId}')">
+                                                    <i class="layui-icon">&#xe640;</i>删除
+                                                </a>
+                                            </c:if>
                                             <a class="layui-btn layui-btn-xs"
                                                href="javascript:void(0);"
                                                onclick="lookContent('${help.helpContent}')">

@@ -8,23 +8,34 @@
         http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
         http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd">
-
     <!--扫描包-->
     <context:component-scan base-package="com.house"/>
-
-    <!--读取常量配置文件-->
-    <context:property-placeholder location="classpath:resource.properties"/>
 
     <mvc:annotation-driven/>
 
     <task:annotation-driven/>
 
+    <!--读取常量配置文件-->
+    <context:property-placeholder location="classpath:resource.properties"/>
+
+    <!--上传文件-->
     <bean id="multipartResolver"
           class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
         <property name="defaultEncoding" value="UTF-8"/>
         <property name="maxUploadSize" value="102428800"/>
         <property name="maxInMemorySize" value="1"/>
     </bean>
+
+    <mvc:interceptors>
+        <!--配置登录拦截器-->
+        <mvc:interceptor>
+            <!--拦截所有-->
+            <mvc:mapping path="/**"/>
+            <bean class="com.house.interceptor.Interceptor"/>
+        </mvc:interceptor>
+
+    </mvc:interceptors>
+
 
     <!-- 视图解析器 -->
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">

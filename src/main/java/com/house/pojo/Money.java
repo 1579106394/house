@@ -40,9 +40,34 @@ public class Money implements Serializable {
      */
     @TableField("money_money")
     private Double moneyMoney;
+    /**
+     * 所属房屋
+     */
+    @TableField("money_house")
+    private String moneyHouse;
+
 
     @TableField(exist = false)
     private User user;
+
+    @TableField(exist = false)
+    private House house;
+
+    public String getMoneyHouse() {
+        return moneyHouse;
+    }
+
+    public void setMoneyHouse(String moneyHouse) {
+        this.moneyHouse = moneyHouse;
+    }
+
+    public House getHouse() {
+        return house;
+    }
+
+    public void setHouse(House house) {
+        this.house = house;
+    }
 
     public static long getSerialVersionUID() {
         return serialVersionUID;

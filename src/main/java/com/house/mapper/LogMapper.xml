@@ -8,7 +8,7 @@
         <result column="log_house" property="logHouse"/>
         <result column="log_user" property="logUser"/>
         <result column="log_state" property="logState"/>
-        <association property="house" javaType="House">
+        <association property="house" javaType="com.house.pojo.House">
             <id column="house_id" property="houseId"/>
             <result column="house_name" property="houseName"/>
             <result column="house_area" property="houseArea"/>
@@ -18,7 +18,7 @@
             <result column="house_state" property="houseState"/>
             <result column="house_comment" property="houseComment"/>
         </association>
-        <association property="user" javaType="User">
+        <association property="user" javaType="com.house.pojo.User">
             <id column="id" property="id"/>
             <result column="username" property="username"/>
             <result column="password" property="password"/>

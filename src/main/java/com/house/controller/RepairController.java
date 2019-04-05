@@ -72,13 +72,17 @@ public class RepairController {
     /**
      * 报修列表
      * 分页查询
-     * 如果不是管理员登录，就只看自己的
+     * 如果是用户登录，就只看自己的
+     * 如果是公司登录，就看属于自己公司的
      */
     @RequestMapping("/repairList.html")
     public String repairList(Page<Repair> page, Model model, HttpSession session) {
         User user = (User) session.getAttribute("user");
-        if (user.getRole()!=3) {
+        if (user.getRole()==1) {
             page.getParams().put("userId", user.getId());
+        }
+        if (user.getRole()==2) {
+            page.getParams().put("company", user.getId());
         }
         Page<Repair> p = repairService.getByPage(page);
         model.addAttribute("page", p);
