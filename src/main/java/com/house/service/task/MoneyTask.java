@@ -47,7 +47,7 @@ public class MoneyTask {
      * 取出每个租房记录的用户信息和房屋信息
      * 按照房屋的月租进行扣费
      * 记录扣费信息，时间为本月
-     * 如果用户房租小于等于0，自动退房，修改房屋状态
+     * 如果用户房租小于等于0，自动退房，修改房屋状态，退还押金
      *
      */
     // @Scheduled(cron = "0 50 23 L * ? ")
@@ -75,6 +75,11 @@ public class MoneyTask {
                 houseService.updateById(house);
                 log.setLogState(2);
                 logService.updateById(log);
+
+                // 退还押金
+                user.setMoney(user.getMoney() + house.getHousePrice());
+                userService.updateById(user);
+
             }
 
             // 新增一条收租记录

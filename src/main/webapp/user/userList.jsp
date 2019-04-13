@@ -44,6 +44,35 @@
         }
 
         /**
+         * 充值
+         * @param id
+         */
+        function addMoney(id) {
+            // e6模板语法
+            var projectPath = '${pageContext.request.contextPath}'
+            var content = `<form id="addHouseForm" class="layui-form"
+                          action="${"${projectPath}"}/user/addMoney.html" method="post">
+                          <input type="hidden" name="id" value=${"${id}"}>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">充值金额</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="money" required lay-verify="required" placeholder="充值金额"
+                               autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <div class="layui-input-inline">
+                        <button class="layui-btn" type="submit" id="submitButton">立即提交</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    </div>
+                </div>
+            </form>
+            `
+            layer.alert(content)
+        }
+
+        /**
          * 查看图片
          */
         function lookImg(imgUrl) {
@@ -105,7 +134,8 @@
 
                             <div class="layui-inline" style="text-align:left;">
                                 <div class="layui-input-inline">
-                                    <button class="layui-btn" type="submit"><i class="layui-icon">&#xe615;</i>查询</button>
+                                    <button class="layui-btn" type="submit"><i class="layui-icon">&#xe615;</i>查询
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -135,7 +165,7 @@
                                 <tr>
                                     <td>${user.username}</td>
                                     <td>${user.name}</td>
-                                    <td>${user.money}</td>
+                                    <td>${user.mobile}</td>
                                     <td>${user.age}</td>
                                     <td>${user.sex==1?"男":"女"}</td>
                                     <td>${user.money}</td>
@@ -147,6 +177,13 @@
                                                onclick="deleteUser('${user.id}')">
                                                 <i class="layui-icon">&#xe640;</i>删除
                                             </a>
+                                            <c:if test="${user.role==1}">
+                                                <a class="layui-btn layui-btn-xs layui-btn-success"
+                                                   href="javascript:void(0)"
+                                                   onclick="addMoney('${user.id}')">
+                                                    <i class="layui-icon">&#xe640;</i>充值
+                                                </a>
+                                            </c:if>
                                         </div>
                                     </td>
                                 </tr>

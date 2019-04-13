@@ -4,6 +4,8 @@ import com.house.pojo.House;
 import com.baomidou.mybatisplus.service.IService;
 import com.house.pojo.Page;
 
+import java.util.List;
+
 /**
  * <p>
  * 房屋表 服务类
@@ -20,4 +22,11 @@ public interface HouseService extends IService<House> {
      * @return
      */
     Page<House> getByPage(Page<House> page);
+
+    /**
+     * 查询我租的房子
+     * @param id
+     * @return
+     */
+    List<House> selectMyHouse(String id);
 }

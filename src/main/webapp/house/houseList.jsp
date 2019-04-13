@@ -59,8 +59,18 @@
          */
         function logHouse(id) {
             layer.confirm('确定租用这套房吗?', {icon: 1, title: '提示'}, function (index) {
-                window.location.href = "${pageContext.request.contextPath}/house/log" + id + ".html"
-                layer.close(index);
+                $.post(
+                    "${pageContext.request.contextPath}/house/log.action",
+                    {"houseId": id},
+                    function(result) {
+                        if(result.code==200) {
+                            location.href="${pageContext.request.contextPath}/repair/repairList.html"
+                        }else {
+                            layer.alert("余额不足！");
+                        }
+                        layer.close(index);
+                    }
+                )
             });
         }
 

@@ -29,4 +29,11 @@ public interface HouseMapper extends BaseMapper<House> {
      * @return
      */
     Integer getCount(Page<House> page);
+
+    /**
+     * 查询我租的房子
+     * @param id
+     * @return
+     */
+    List<House> selectMyHouse(String id);
 }

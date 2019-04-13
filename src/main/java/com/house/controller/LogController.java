@@ -85,6 +85,7 @@ public class LogController {
      * 2.查询对应的房子，租房状态改为1
      * 3.对应的用户，扣取一个月房租
      * 4.扣取房租后，生成一条扣款记录
+     * 5.退还押金（收房租和退押金重了）
      */
     @RequestMapping("/checkOut{logId}.html")
     public String checkOut(@PathVariable String logId) {
@@ -101,6 +102,7 @@ public class LogController {
         // 修改用户钱数
         User user = userService.selectById(log.getLogUser());
         user.setMoney(user.getMoney() - house.getHousePrice());
+        user.setMoney(user.getMoney() + house.getHousePrice());
         userService.updateById(user);
 
         // 生成扣费记录
@@ -110,6 +112,8 @@ public class LogController {
         money.setMoneyUser(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
         money.setMoneyMoney(house.getHousePrice());
         moneyService.insert(money);
+
+
         return "redirect:/log/logList.html";
     }
 

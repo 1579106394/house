@@ -45,9 +45,9 @@ public class RepairController {
      * 查询房屋列表，跳转到添加报修页面
      */
     @RequestMapping("/toRepair.html")
-    public String toRepair(Model model) {
-        Wrapper<House> wrapper = new EntityWrapper<>();
-        List<House> houseList = houseService.selectList(wrapper);
+    public String toRepair(Model model, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        List<House> houseList = houseService.selectMyHouse(user.getId());
         model.addAttribute("houseList", houseList);
         return "repair/addRepair";
     }
@@ -64,6 +64,7 @@ public class RepairController {
         repair.setRepairId(idWorker.nextId()+"");
         repair.setRepairUser(user.getId());
         repair.setRepairTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+        repair.setRepairState(0);
         repairService.insert(repair);
         return "redirect:/repair/repairList.html";
     }
@@ -114,11 +115,27 @@ public class RepairController {
     }
 
     /**
-     * 修改报修
+     * 进行维修
      */
     @RequestMapping("/updateRepair.html")
     public String updateRepair(Repair repair) {
-        repairService.updateById(repair);
+        Repair rep = repairService.selectById(repair.getRepairId());
+        rep.setRepairState(1);
+        rep.setRepairStaff(repair.getRepairStaff());
+        repairService.updateById(rep);
+        return "redirect:/repair/repairList.html";
+    }
+
+    /**
+     * 维修完毕
+     * 查询维修状态
+     * 状态更新为已维修
+     */
+    @RequestMapping("/repair{repairId}.html")
+    public String repair(@PathVariable String repairId) {
+        Repair rep = repairService.selectById(repairId);
+        rep.setRepairState(2);
+        repairService.updateById(rep);
         return "redirect:/repair/repairList.html";
     }
 

@@ -71,4 +71,11 @@
         </where>
     </select>
 
+    <select id="selectMyHouse" resultMap="BaseResultMap">
+        select * from h_house
+        inner join h_log on house_id = log_house
+        where log_state = 1
+        and log_user = #{id}
+    </select>
+
 </mapper>

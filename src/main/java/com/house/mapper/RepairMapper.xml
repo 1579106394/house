@@ -9,6 +9,8 @@
         <result column="repair_user" property="repairUser"/>
         <result column="repair_time" property="repairTime"/>
         <result column="repair_content" property="repairContent"/>
+        <result column="repair_staff" property="repairStaff"/>
+        <result column="repair_state" property="repairState"/>
         <association property="house" javaType="com.house.pojo.House">
             <id column="house_id" property="houseId"/>
             <result column="house_name" property="houseName"/>
@@ -50,6 +52,9 @@
             <if test="params.userName!=null and params.userName!=''">
                 and name like '%${params.userName}%'
             </if>
+            <if test="params.staffName!=null and params.staffName!=''">
+                and repair_staff like '%${params.staffName}%'
+            </if>
         </where>
         order by repair_time desc
         limit #{index}, #{currentCount}
@@ -71,6 +76,9 @@
             </if>
             <if test="params.userName!=null and params.userName!=''">
                 and name like '%${params.userName}%'
+            </if>
+            <if test="params.staffName!=null and params.staffName!=''">
+                and repair_staff like '%${params.staffName}%'
             </if>
         </where>
     </select>

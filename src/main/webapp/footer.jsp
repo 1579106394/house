@@ -4,3 +4,9 @@
     <!-- 底部固定区域 -->
     © layui.com - 底部固定区域
 </div>
+
+<style>
+    * {
+        font-size: 18px;
+    }
+</style>

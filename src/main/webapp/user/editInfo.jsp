@@ -68,7 +68,7 @@
                             <label class="layui-form-label">年龄</label>
                             <div class="layui-input-block">
                                 <input type="text" name="age" lay-verify="required" placeholder="年龄"
-                                       autocomplete="off" class="layui-input" value="${sessionScope.user.age}">
+                                       autocomplete="off" readonly class="layui-input" value="${sessionScope.user.age}">
                             </div>
                         </div>
                         <div class="layui-form-item">
@@ -76,6 +76,12 @@
                             <div class="layui-input-block">
                                 <input type="text" name="money" readonly lay-verify="required" placeholder="余额"
                                        autocomplete="off" class="layui-input" value="${sessionScope.user.money}">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label"></label>
+                            <div class="layui-input-block">
+                                ${error}
                             </div>
                         </div>
                         <div class="layui-form-item">

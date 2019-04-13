@@ -45,12 +45,38 @@ public class Repair implements Serializable {
      */
     @TableField("repair_content")
     private String repairContent;
+    /**
+     * 维修人
+     */
+    @TableField("repair_staff")
+    private String repairStaff;
+    /**
+     * 0未维修，1维修中，2维修完毕
+     */
+    @TableField("repair_state")
+    private Integer repairState;
 
     @TableField(exist = false)
     private House house;
 
     @TableField(exist = false)
     private User user;
+
+    public String getRepairStaff() {
+        return repairStaff;
+    }
+
+    public void setRepairStaff(String repairStaff) {
+        this.repairStaff = repairStaff;
+    }
+
+    public Integer getRepairState() {
+        return repairState;
+    }
+
+    public void setRepairState(Integer repairState) {
+        this.repairState = repairState;
+    }
 
     public static long getSerialVersionUID() {
         return serialVersionUID;

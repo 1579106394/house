@@ -28,25 +28,10 @@
                           action="${pageContext.request.contextPath}/repair/updateRepair.html" method="post">
                         <input type="hidden" name="repairId" value="${repair.repairId}"/>
                         <div class="layui-form-item">
-                            <label class="layui-form-label">报修房屋</label>
+                            <label class="layui-form-label">维修人</label>
                             <div class="layui-input-block">
-                                <select name="repairHouse">
-                                    <c:forEach items="${houseList}" var="house">
-                                        <c:if test="${repair.repairHouse==house.houseId}">
-                                            <option value="${house.houseId}" selected>${house.houseName}</option>
-                                        </c:if>
-                                        <c:if test="${repair.repairHouse!=house.houseId}">
-                                            <option value="${house.houseId}">${house.houseName}</option>
-                                        </c:if>
-                                    </c:forEach>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="layui-form-item">
-                            <label class="layui-form-label">报修原因</label>
-                            <div class="layui-input-block">
-                                <textarea name="repairContent" placeholder="请输入内容"
-                                          class="layui-textarea">${repair.repairContent}</textarea>
+                                <input type="text" name="repairStaff" required lay-verify="required" placeholder="维修人"
+                                       autocomplete="off" class="layui-input">
                             </div>
                         </div>
 

@@ -1,9 +1,11 @@
 package com.house.service.impl;
 
-import com.house.pojo.House;
-import com.house.mapper.HouseMapper;
+import com.house.mapper.RepairMapper;
 import com.house.pojo.Page;
-import com.house.service.HouseService;
+import com.house.pojo.Recharge;
+import com.house.mapper.RechargeMapper;
+import com.house.pojo.Repair;
+import com.house.service.RechargeService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,18 +15,17 @@ import java.util.List;
 
 /**
  * <p>
- * 房屋表 服务实现类
+ * 充值记录表 服务实现类
  * </p>
  *
  * @author ${author}
- * @since 2019-03-30
+ * @since 2019-04-13
  */
 @Service
-public class HouseServiceImpl extends ServiceImpl<HouseMapper, House> implements HouseService {
+public class RechargeServiceImpl extends ServiceImpl<RechargeMapper, Recharge> implements RechargeService {
 
     @Autowired
-    private HouseMapper houseMapper;
-
+    private RechargeMapper rechargeMapper;
     @Value("${CURRENT_COUNT}")
     private Integer CURRENT_COUNT;
 
@@ -34,7 +35,7 @@ public class HouseServiceImpl extends ServiceImpl<HouseMapper, House> implements
      * @return
      */
     @Override
-    public Page<House> getByPage(Page<House> page) {
+    public Page<Recharge> getByPage(Page<Recharge> page) {
         // 设置当前页，如果当前页为空，默认是0
         Integer currentPage = page.getCurrentPage();
         if(currentPage==null) {
@@ -48,9 +49,9 @@ public class HouseServiceImpl extends ServiceImpl<HouseMapper, House> implements
         page.setIndex(index);
         page.setCurrentCount(currentCount);
         // 根据这些信息，分页查询
-        List<House> list = houseMapper.getList(page);
+        List<Recharge> list = rechargeMapper.getList(page);
         // 查询总条数
-        Integer totalCount = houseMapper.getCount(page);
+        Integer totalCount = rechargeMapper.getCount(page);
         // 设置总条数
         page.setTotalCount(totalCount);
         // 设置数据
@@ -59,15 +60,5 @@ public class HouseServiceImpl extends ServiceImpl<HouseMapper, House> implements
         int totalPage = (int) Math.ceil(totalCount*1.0/currentCount);
         page.setTotalPage(totalPage);
         return page;
-    }
-
-    /**
-     * 查询我租的房子
-     * @param id
-     * @return
-     */
-    @Override
-    public List<House> selectMyHouse(String id) {
-        return houseMapper.selectMyHouse(id);
     }
 }

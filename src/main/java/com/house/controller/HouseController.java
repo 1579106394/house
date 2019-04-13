@@ -7,14 +7,18 @@ import com.house.pojo.Page;
 import com.house.pojo.User;
 import com.house.service.HouseService;
 import com.house.service.LogService;
+import com.house.service.UserService;
 import com.house.utils.IdWorker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * <p>
@@ -32,6 +36,8 @@ public class HouseController {
     private HouseService houseService;
     @Autowired
     private LogService logService;
+    @Autowired
+    private UserService userService;
     /**
      * 雪花算法生成id
      */
@@ -104,23 +110,44 @@ public class HouseController {
      * 将房屋的状态改为已租出
      * 添加一条租房记录
      * 当前是谁登录，这个房就是谁租的
+     * 租房需要扣一个月房租作为押金
      */
-    @RequestMapping("/log{houseId}.html")
-    public String repair(@PathVariable String houseId, HttpSession session) {
-        User user = (User) session.getAttribute("user");
-        // 更新房屋状态
-        House house = houseService.selectById(houseId);
-        house.setHouseState(2);
-        houseService.updateById(house);
-        // 添加一条租房记录
-        Log log = new Log();
-        // 补全属性
-        log.setLogId(idWorker.nextId()+"");
-        log.setLogHouse(houseId);
-        log.setLogUser(user.getId());
-        log.setLogState(1);
-        logService.insert(log);
-        return "redirect:/repair/repairList.html";
+    @RequestMapping("/log.action")
+    @ResponseBody
+    public Map<String, Object> repair(String houseId, HttpSession session) {
+        Map<String, Object> resultMap = new HashMap();
+        try {
+            User user = (User) session.getAttribute("user");
+            // 更新房屋状态
+            House house = houseService.selectById(houseId);
+
+            // 查询余额还够不够
+            if(user.getMoney()<house.getHousePrice()) {
+                resultMap.put("code", "400");
+                return resultMap;
+            }
+
+            house.setHouseState(2);
+            houseService.updateById(house);
+            // 添加一条租房记录
+            Log log = new Log();
+            // 补全属性
+            log.setLogId(idWorker.nextId()+"");
+            log.setLogHouse(houseId);
+            log.setLogUser(user.getId());
+            log.setLogState(1);
+            logService.insert(log);
+
+            // 用户扣除押金
+            user.setMoney(user.getMoney() - house.getHousePrice());
+            userService.updateById(user);
+            resultMap.put("code", 200);
+            return resultMap;
+        }catch (Exception e) {
+            e.printStackTrace();
+            resultMap.put("code", "400");
+            return resultMap;
+        }
     }
 
 }

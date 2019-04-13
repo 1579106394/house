@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.house.mapper.RechargeMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.house.pojo.Recharge">
+        <id column="recharge_id" property="rechargeId" />
+        <result column="recharge_user" property="rechargeUser" />
+        <result column="recharge_money" property="rechargeMoney" />
+        <result column="recharge_time" property="rechargeTime" />
+        <association property="user" javaType="com.house.pojo.User">
+            <id column="id" property="id"/>
+            <result column="username" property="username"/>
+            <result column="password" property="password"/>
+            <result column="name" property="name"/>
+            <result column="mobile" property="mobile"/>
+            <result column="card" property="card"/>
+            <result column="age" property="age"/>
+            <result column="sex" property="sex"/>
+            <result column="money" property="money"/>
+            <result column="role" property="role"/>
+        </association>
+    </resultMap>
+
+    <select id="getList" parameterType="com.house.pojo.Page" resultMap="BaseResultMap">
+        select * from h_recharge
+        inner join h_user on recharge_user = id
+        <where>
+            <if test="params.userName!=null and params.userName!=''">
+                and name like '%${params.userName}%'
+            </if>
+        </where>
+        order by recharge_time desc
+        limit #{index}, #{currentCount}
+    </select>
+
+    <select id="getCount" parameterType="com.house.pojo.Page" resultType="java.lang.Integer">
+        select count(*) from h_recharge
+        inner join h_user on recharge_user = id
+        <where>
+            <if test="params.userName!=null and params.userName!=''">
+                and name like '%${params.userName}%'
+            </if>
+        </where>
+    </select>
+
+</mapper>

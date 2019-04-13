@@ -57,6 +57,13 @@
                        class="layui-input" lay-verType="required">
             </div>
             <div class="layui-form-item">
+                <label class="beg-login-icon">
+                    <i class="layui-icon">&#xe642;</i>
+                </label>
+                <input type="text" lay-verify="required" name="card" autocomplete="off" placeholder="身份证号"
+                       class="layui-input" lay-verType="required">
+            </div>
+            <div class="layui-form-item">
                     <label class="layui-form-label" style="text-align: left;">性别</label>
                 <div class="layui-input-block">
                 <input type="radio" name="sex" value="1" title="男" checked>
